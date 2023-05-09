@@ -1,0 +1,17 @@
+module.exports = {
+  ROOM_STATUS: {
+    WAITING: 'WAITING',
+    PLAYING: 'PLAYING',
+    FINISHED: 'FINISHED',
+  },
+  PLAYER_STATUS: {
+    WAITING: 'WAITING',
+    PLAYING: 'PLAYING',
+    FINISHED: 'FINISHED',
+    WATCHING: 'WATCHING',
+  },
+  COLORS: {
+    BLACK: 'BLACK',
+    WHITE: 'WHITE',
+  },
+}
