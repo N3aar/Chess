@@ -11,8 +11,8 @@ const gameContext = {
 }
 
 const images = {};
-const squareSize = 81;
-const gridGap = 2;
+const squareSize = 83;
+const gridGap = 1;
 
 class Square {
   constructor (x, y) {
@@ -47,8 +47,8 @@ const startBoard = () => {
     }
   }
 
-  createPieces("black", 0, 1);
-  createPieces("white", 7, 6);
+  createPieces("white", 0, 1);
+  createPieces("black", 7, 6);
 }
 
 const draw = () => {
@@ -62,13 +62,15 @@ const draw = () => {
         const piece = square.piece;
         const imagePiece = images[`${piece.color}${piece.type}`];
 
-        const gapX = square.x > 0 || square.x < 7 ? gridGap : 0;
-        const gapY = square.y > 0 || square.y < 7 ? gridGap : 0;
+        const margin = 69;
 
-        const centerX = ((square.x * squareSize) + gapX + (squareSize / 2)) - (imagePiece.width / 2);
-        const centerY = ((square.y * squareSize) + gapY + (squareSize / 2)) - (imagePiece.width / 2);
+        const gapX = square.x > 0 && square.x < 7 ? gridGap : 0;
+        const gapY = square.y > 0 && square.y < 7 ? gridGap : 0;
 
-        ctx.drawImage(imagePiece, 69 + centerX, 69 + centerY, imagePiece.width, imagePiece.height);
+        const centerX = ((square.x * squareSize) + gapX) + ((squareSize / 2) - (imagePiece.width / 2));
+        const centerY = ((square.y * squareSize) + gapY) + ((squareSize / 2) - (imagePiece.height / 2));
+
+        ctx.drawImage(imagePiece, margin + centerX, margin + centerY, imagePiece.width, imagePiece.height);
       }
     }
   }
