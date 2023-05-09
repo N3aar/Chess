@@ -1,0 +1,15 @@
+body, html {
+  width: 100vw;
+  height: 100vh;
+}
+
+body {
+  overflow: hidden;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
