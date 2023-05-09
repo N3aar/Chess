@@ -2,7 +2,7 @@ const fastify = require('fastify')
 const path = require('path')
 
 const server = fastify({ logger: true })
-const port = process.env.PORT
+const port = process.env.PORT || 3000
 
 server.register(require('@fastify/websocket'))
 
@@ -28,6 +28,8 @@ const start = async () => {
     port,
     host: '0.0.0.0'
   })
+
+  console.log('Listen on http://localhost:' + port)
 }
 
 start()
