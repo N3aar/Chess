@@ -1,5 +1,5 @@
 const crypto = require('crypto')
-const { ROOM_STATUS } = require('../constraints')
+const { ROOM_STATUS } = require('../constants')
 
 const room = new Map()
 
@@ -12,6 +12,7 @@ const createNewRoom = (roomName, maxPlayers) => {
     turn: 0,
     board: [],
     maxPlayers: 2,
+    password: '',
   }
 
   return room
@@ -19,8 +20,7 @@ const createNewRoom = (roomName, maxPlayers) => {
 
 const roomService = {
   createRoom: async (req, res) => {
-    const { roomName } = req.body
-    const { maxPlayers } = req.body
+    const { roomName, maxPlayers } = req.body
     const newRoom = createNewRoom(roomName, maxPlayers)
     room.set(newRoom.id, newRoom)
 
@@ -28,8 +28,7 @@ const roomService = {
   },
 
   joinRoom: async (req, res) => {
-    const { roomId } = req.body
-    const { playerId } = req.body
+    const { roomId, playerId } = req.body
     const currentRoom = room.get(roomId)
 
     if (currentRoom.players.length >= currentRoom.maxPlayers) {

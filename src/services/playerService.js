@@ -1,7 +1,7 @@
 const crypto = require('crypto')
-const { PLAYER_STATUS } = require('../constraints')
+const { PLAYER_STATUS } = require('../constants')
 
-const createNewPlayer = async (playerName, socket) => {
+const createNewPlayer = (playerName, socket) => {
   const player = {
     id: crypto.randomBytes(16).toString('hex'),
     name: playerName,
