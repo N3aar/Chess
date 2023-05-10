@@ -1,11 +1,12 @@
 const crypto = require('crypto')
 const { PLAYER_STATUS } = require('../constants')
 
+const players = new Map()
+
 const createNewPlayer = (playerName, socket) => {
   const player = {
-    id: crypto.randomBytes(16).toString('hex'),
     name: playerName,
-    status: PLAYER_STATUS.WAITING,
+    status: PLAYER_STATUS.NO_ROOM,
     socket,
   }
 
@@ -16,12 +17,12 @@ const playerService = {
   createPlayer: async (req, res) => {
     const { playerName } = req.body
     const newPlayer = createNewPlayer(playerName)
-    player.set(newPlayer.id, newPlayer)
+    players.set(newPlayer.id, newPlayer)
   },
 
   getPlayer: async (req, res) => {
     const { playerId } = req.params
-    return player.get(playerId)
+    return players.get(playerId)
   }
 }
 

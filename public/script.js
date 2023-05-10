@@ -1,7 +1,7 @@
 console.log('Chess!')
 
-// import WSClient from './websocket.js';
-// WSClient();
+import WSClient from './websocket.js';
+WSClient();
 
 const canvas = document.querySelector(".canvas-chess");
 const ctx = canvas.getContext("2d");
