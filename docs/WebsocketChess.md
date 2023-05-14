@@ -9,6 +9,7 @@
     - [Message format](#message-format)
     - [Message types](#message-types)
     - [Data types and operations](#data-types-and-operations)
+      - [Errors](#errors)
       - [Room](#room)
       - [Lobby](#lobby)
       - [Game](#game)
@@ -32,7 +33,20 @@ All messages are JSON objects. The object must contain a `type` field. The value
 | `data` | object | The data of the message. |
 | `op` | string | The operation to perform. |
 
-If a data is invalid or missing, the server will respond with an error message. The error message will contain a `error` field with a description of the error. In case of an invalid message `type` or `op`, the server will respond terminate the connection.
+If a data is invalid or missing, the server will respond with an error type. The error message will contain a `error` field with a description of the error. error type are described in the [Errors](#errors) section.
+
+```json
+{
+  "type": "error",
+  "op": null,
+  "data": {
+    "status": "invalidData",
+    "error": "The data is invalid."
+  }
+}
+```
+
+In case of an invalid message `type` or `op`, the server will terminate the connection.
 
 Packet example:
 ```json
@@ -64,6 +78,26 @@ There are several message types. The type of a message is determined by the `typ
 For each message type there is a corresponding data type. The data type is determined by the `type` field. The following sections describe the different data types.
 
 **Observation:** The `?` symbol indicates that the field is optional.
+
+#### Errors
+
+Errors are used to indicate that something went wrong. An error message contains an `error` field with a description of the error. The following table describes the different error types.
+
+**Packet error types:**
+| Type | Description |
+| --- | --- |
+| `invalidType` | The type of the message is invalid. |
+| `invalidData` | The data of the message is invalid. |
+| `invalidOperation` | The operation of the message is invalid. |
+
+**Room error types:**
+| Type | Description |
+| --- | --- |
+| `invalidRoom` | The room does not exist. |
+| `invalidPlayer` | The player does not exist. |
+| `invalidPassword` | The password is incorrect. |
+| `invalidMaxPlayers` | The maximum number of players is invalid. |
+
 
 #### Room
 
