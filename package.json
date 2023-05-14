@@ -3,16 +3,20 @@
   "version": "1.0.0",
   "description": "Every new repl comes with a `.replit` and a `replit.nix` file that let you configure your repl to do just about anything in any language!",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/server.js | pino-pretty"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@fastify/static": "^6.10.1",
-    "@fastify/websocket": "^8.0.0",
-    "fastify": "^4.17.0",
-    "pino-pretty": "^10.0.0"
+    "@tinyhttp/app": "^2.0.32",
+    "milliparsec": "^2.3.0",
+    "nodemon": "^2.0.22",
+    "pino-pretty": "^10.0.0",
+    "sirv": "^2.0.3",
+    "tinyws": "^0.1.0"
   }
 }

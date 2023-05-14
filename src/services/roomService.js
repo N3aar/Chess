@@ -1,56 +1,60 @@
-const crypto = require('crypto')
-const { ROOM_STATUS } = require('../constants')
+import crypto from 'crypto'
+import { ROOM_STATUS } from '../constants.js'
 
 const room = new Map()
 
-const createNewRoom = (roomName, maxPlayers) => {
+const createNewRoom = (roomName, maxPlayers = 2) => {
   const room = {
-    players: [],
-    id: crypto.randomBytes(16).toString('hex'),
+    id: crypto.randomBytes(4).toString('hex'),
     name: roomName,
-    status: ROOM_STATUS.WAITING,
-    turn: 0,
-    board: [],
-    maxPlayers: 2,
     password: '',
+    maxPlayers,
+    players: [],
+    status: ROOM_STATUS.WAITING,
+    owner: '',
+    board: [],
   }
 
   return room
 }
 
 const roomService = {
-  createRoom: async (req, res) => {
-    const { roomName, maxPlayers } = req.body
-    const newRoom = createNewRoom(roomName, maxPlayers)
+  createRoom: (name, maxPlayers) => {
+    const newRoom = createNewRoom(name, maxPlayers)
     room.set(newRoom.id, newRoom)
 
     return newRoom
   },
 
-  joinRoom: async (req, res) => {
-    const { roomId, playerId } = req.body
-    const currentRoom = room.get(roomId)
+  joinRoom: (roomId, playerId) => {
+    const room = room.get(roomId)
 
-    if (currentRoom.players.length >= currentRoom.maxPlayers) {
+    if (!room) {
+      return {
+        error: 'Room not found',
+      }
+    }
+
+    if (room.players.length >= room.maxPlayers) {
       return {
         error: 'Room is full',
       }
     }
 
-    currentRoom.players.push(playerId)
-    room.set(roomId, currentRoom)
+    if (room.players.length == 0) room.owner = playerId
+    room.players.push(playerId)
 
-    return currentRoom
+    room.set(roomId, room)
+    return room
   },
 
-  getRooms: async (req, res) => {
+  getRooms: () => {
     return [...room.values()]
   },
 
-  getRoom: async (req, res) => {
-    const { roomId } = req.params
-    return room.get(roomId)
+  getRoom: (id) => {
+    return room.get(id)
   },
 }
 
-module.exports = roomService
+export default roomService
