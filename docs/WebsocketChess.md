@@ -21,11 +21,11 @@ This document describes the WebSocket protocol used by the chess server. The pro
 
 ## Protocol
 
-The protocol is based on JSON messages. The client and server can send messages to each other at any time. The server will always respond to a message with a message of its own. The server will never send a message without receiving one first.
+The protocol is based on JSON messages. The client and server can send messages to each other at any time. The server will always respond to a message with a message of its own or `error` type. The server will never send a message without receiving one first.
 
 ### Message format
 
-All messages are JSON objects. The object must contain a `type` field. The value of the `type` field determines the packet type. The object must also contain a `data` field.
+All messages are JSON objects. The object must contain a `type` field. The value of the `type` field determines the data type of the message. The object must also contain a `data` field. The value of the `data` field is an object that contains the data corresponding to the operation. The object must also contain an `op` field. The value of the `op` field determines the operation to perform on server.
 
 | Field | Type | Description |
 | --- | --- | --- |
@@ -35,6 +35,7 @@ All messages are JSON objects. The object must contain a `type` field. The value
 
 If a data is invalid or missing, the server will respond with an error type. The error message will contain a `error` field with a description of the error. error type are described in the [Errors](#errors) section.
 
+**Error packet example:**
 ```json
 {
   "type": "error",
@@ -47,18 +48,6 @@ If a data is invalid or missing, the server will respond with an error type. The
 ```
 
 In case of an invalid message `type` or `op`, the server will terminate the connection.
-
-Packet example:
-```json
-{
-  "type": "room",
-  "op": "create",
-  "data": {
-    "name": "My room"
-    ...
-  }
-}
-```
 
 ### Message types
 
@@ -86,6 +75,7 @@ Errors are used to indicate that something went wrong. An error message contains
 **Packet error types:**
 | Type | Description |
 | --- | --- |
+| `invalidPacket` | The packet is invalid. |
 | `invalidType` | The type of the message is invalid. |
 | `invalidData` | The data of the message is invalid. |
 | `invalidOperation` | The operation of the message is invalid. |
