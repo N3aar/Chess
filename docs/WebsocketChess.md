@@ -80,6 +80,7 @@ Rooms are used to group players together. A room can be public or private. A pub
     ...
   ],
   "status": "...",
+  "owner": "player-id",
   "board": {
     ...
   }
