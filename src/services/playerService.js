@@ -1,5 +1,5 @@
-const crypto = require('crypto')
-const { PLAYER_STATUS } = require('../constants')
+import crypto from 'crypto'
+import { PLAYER_STATUS } from '../constants.js'
 
 const players = new Map()
 
@@ -7,6 +7,7 @@ const createNewPlayer = (playerName, socket) => {
   const player = {
     name: playerName,
     status: PLAYER_STATUS.NO_ROOM,
+    id: crypto.randomBytes(4).toString('hex'),
     socket,
   }
 
@@ -14,16 +15,19 @@ const createNewPlayer = (playerName, socket) => {
 }
 
 const playerService = {
-  createPlayer: async (req, res) => {
-    const { playerName } = req.body
-    const newPlayer = createNewPlayer(playerName)
+  createPlayer: (playerName, socket) => {
+    const newPlayer = createNewPlayer(playerName, socket)
     players.set(newPlayer.id, newPlayer)
+
+    return {
+      id: newPlayer.id,
+      name: newPlayer.name,
+    }
   },
 
-  getPlayer: async (req, res) => {
-    const { playerId } = req.params
-    return players.get(playerId)
+  getPlayer: async (id) => {
+    return players.get(id)
   }
 }
 
-module.exports = playerService
+export default playerService

@@ -1,34 +1,11 @@
-const fastify = require('fastify')
-const path = require('path')
+import { App } from '@tinyhttp/app'
+import { tinyws } from 'tinyws'
+import router from './router.js'
 
-const server = fastify({
-  logger: {
-    level: 'info'
-  }
-})
+const app = new App()
 const port = process.env.PORT || 3000
 
-const routes = require('./appRoutes')
+app.use(tinyws())
+  .use(router)
+  .listen(port, () => console.log(`Server running on port ${port}`))
 
-server.register(require('@fastify/websocket'))
-
-server.register(require('@fastify/static'), {
-  root: path.join(__dirname, '/public'),
-  prefix: '/public/'
-})
-
-server.register(routes)
-
-const start = async () => {
-  await server.listen({
-    port,
-    host: '0.0.0.0'
-  }, (err) => {
-    if (err) {
-      console.error(err)
-      process.exit(1)
-    }
-  })
-}
-
-start()
